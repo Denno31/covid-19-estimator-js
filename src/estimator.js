@@ -12,7 +12,7 @@ const factorComputation = (periodType, timeToElapse) => {
 const availableHospitals = (totalHospitalBeds, severeCases) => {
   const thirtyFivePerc = 0.35 * totalHospitalBeds;
   const hospitalBedsByRequestedTime = thirtyFivePerc - severeCases;
-  return hospitalBedsByRequestedTime;
+  return Math.trunc(hospitalBedsByRequestedTime);
 };
 const covid19ImpactEstimator = (data) => {
   const {
