@@ -9,8 +9,14 @@ const factorComputation = (periodType, timeToElapse) => {
   const setsOfThree = Math.trunc(normalisedTimePeriod(periodType, timeToElapse) / 3);
   return 2 ** setsOfThree;
 };
+const availableHospitals = (totalHospitalBeds, severeCases) => {
+  const hospitalBedsByRequestedTime = totalHospitalBeds - severeCases;
+  return hospitalBedsByRequestedTime;
+};
 const covid19ImpactEstimator = (data) => {
-  const { periodType, timeToElapse, reportedCases } = data;
+  const {
+    periodType, timeToElapse, reportedCases, totalHospitalBeds
+  } = data;
   const impact = {};
   const severeImpact = {};
   impact.currentlyInfected = reportedCases * 10;
@@ -18,11 +24,16 @@ const covid19ImpactEstimator = (data) => {
   const multiplyFactor = factorComputation(periodType, timeToElapse);
   impact.infectionsByRequestedTime = impact.currentlyInfected * multiplyFactor;
   severeImpact.infectionsByRequestedTime = severeImpact.currentlyInfected * multiplyFactor;
+  const severeCasesByRequestedTime = Math.trunc(0.15 * severeImpact.infectionsByRequestedTime);
+  const beds = availableHospitals(totalHospitalBeds, severeCasesByRequestedTime);
+  const hospitalBedsByRequestedTime = beds;
 
   return {
     data,
     impact,
-    severeImpact
+    severeImpact,
+    severeCasesByRequestedTime,
+    hospitalBedsByRequestedTime
   };
 };
 
