@@ -14,10 +14,10 @@ const availableHospitals = (totalHospitalBeds, severeCases) => {
   const hospitalBedsByRequestedTime = thirtyFivePerc - severeCases;
   return Math.trunc(hospitalBedsByRequestedTime);
 };
-const economicImpct = (earning, periodType, timeToElapse) => {
-  const dollars = normalisedTimePeriod(periodType, timeToElapse) * earning;
-  return dollars;
-};
+// const economicImpct = (earning, periodType, timeToElapse) => {
+//   const dollars = normalisedTimePeriod(periodType, timeToElapse) * earning;
+//   return dollars;
+// };
 const covid19ImpactEstimator = (data) => {
   const {
     periodType, timeToElapse, reportedCases, totalHospitalBeds
@@ -46,16 +46,17 @@ const covid19ImpactEstimator = (data) => {
   const fivePerc = Math.trunc(0.05 * severeImpact.infectionsByRequestedTime);
   const twoPerc = Math.trunc(0.02 * severeImpact.infectionsByRequestedTime);
   severeImpact.casesForICUByRequestedTime = fivePerc;
-  severeImpact.casesForVentilatorsByRequestedTime = twoPerc;
+  severeImpact.casesForICUByRequestedTime = twoPerc;
   // dollars in flight impact
-  const { avgDailyIncomeInUSD, avgDailyIncomePopulation } = data.region;
-  const economicImpact = economicImpct(avgDailyIncomeInUSD, periodType, timeToElapse);
-  const result = economicImpact * impact.infectionsByRequestedTime * avgDailyIncomePopulation;
-  impact.dollarsInFlight = result;
+  //   const { region } = data;
+  //   const { avgDailyIncomeInUSD, avgDailyIncomePopulation } = region;
+  //   const economicImpact = economicImpct(avgDailyIncomeInUSD, periodType, timeToElapse);
+  //   const result = economicImpact * impact.infectionsByRequestedTime * avgDailyIncomePopulation;
+  // impact.dollarsInFlight = result;
   // dollars in flight severeImpact
-  const seconomicImpact = economicImpct(avgDailyIncomeInUSD, periodType, timeToElapse);
-  const sres = seconomicImpact * severeImpact.infectionsByRequestedTime * avgDailyIncomePopulation;
-  severeImpact.dollarsInFlight = sres;
+  //   const seconomicImpact = economicImpct(avgDailyIncomeInUSD, periodType, timeToElapse);
+  //   const sres=seconomicImpact*severeImpact.infectionsByRequestedTime * avgDailyIncomePopulation;
+  //   severeImpact.dollarsInFlight = sres;
   return {
     data,
     impact,
