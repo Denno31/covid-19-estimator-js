@@ -1,4 +1,3 @@
-/* eslint linebreak-style: ["error", "windows"] */
 const normalisedTimePeriod = (periodType, timeToElapse) => {
   let days = null;
   if (periodType === 'days') days = timeToElapse;
