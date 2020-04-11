@@ -46,7 +46,7 @@ const covid19ImpactEstimator = (data) => {
   const fivePerc = Math.trunc(0.05 * severeImpact.infectionsByRequestedTime);
   const twoPerc = Math.trunc(0.02 * severeImpact.infectionsByRequestedTime);
   severeImpact.casesForICUByRequestedTime = fivePerc;
-  severeImpact.casesForICUByRequestedTime = twoPerc;
+  severeImpact.casesForVentilatorsByRequestedTime = twoPerc;
   // dollars in flight impact
   const { avgDailyIncomeInUSD, avgDailyIncomePopulation } = data.region;
   const economicImpact = economicImpct(avgDailyIncomeInUSD, periodType, timeToElapse);
