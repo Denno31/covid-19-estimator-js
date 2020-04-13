@@ -6,7 +6,9 @@ const normalisedTimePeriod = (periodType, timeToElapse) => {
   return days;
 };
 const factorComputation = (periodType, timeToElapse) => {
-  const setsOfThree = Math.trunc(normalisedTimePeriod(periodType, timeToElapse) / 3);
+  const setsOfThree = Math.trunc(
+    normalisedTimePeriod(periodType, timeToElapse) / 3
+  );
   return 2 ** setsOfThree;
 };
 const availableHospitals = (totalHospitalBeds, severeCases) => {
@@ -15,7 +17,7 @@ const availableHospitals = (totalHospitalBeds, severeCases) => {
   return Math.trunc(hospitalBedsByRequestedTime);
 };
 const economicImpct = (earning, periodType, timeToElapse) => {
-  const dollars = normalisedTimePeriod(periodType, timeToElapse) * earning;
+  const dollars = earning / normalisedTimePeriod(periodType, timeToElapse);
   return dollars;
 };
 const covid19ImpactEstimator = (data) => {
@@ -40,8 +42,12 @@ const covid19ImpactEstimator = (data) => {
   const bedsImpact = availableHospitals(totalHospitalBeds, fifteenImpact);
   impact.hospitalBedsByRequestedTime = bedsImpact;
   // icu and ventilators cases impact
-  impact.casesForICUByRequestedTime = Math.trunc(0.05 * impact.infectionsByRequestedTime);
-  impact.casesForVentilatorsByRequestedTime = Math.trunc(0.02 * impact.infectionsByRequestedTime);
+  impact.casesForICUByRequestedTime = Math.trunc(
+    0.05 * impact.infectionsByRequestedTime
+  );
+  impact.casesForVentilatorsByRequestedTime = Math.trunc(
+    0.02 * impact.infectionsByRequestedTime
+  );
   // icu and ventilators severe impact
   const fivePerc = Math.trunc(0.05 * severeImpact.infectionsByRequestedTime);
   const twoPerc = Math.trunc(0.02 * severeImpact.infectionsByRequestedTime);
@@ -50,13 +56,23 @@ const covid19ImpactEstimator = (data) => {
   // dollars in flight impact
   const { region } = data;
   const { avgDailyIncomeInUSD, avgDailyIncomePopulation } = region;
-  const avgPopulationPerc = (avgDailyIncomePopulation / 100);
-  const economicImpact = economicImpct(avgDailyIncomeInUSD, periodType, timeToElapse);
+  const avgPopulationPerc = avgDailyIncomePopulation;
+  const economicImpact = economicImpct(
+    avgDailyIncomeInUSD,
+    periodType,
+    timeToElapse
+  );
   const result = economicImpact * impact.infectionsByRequestedTime * avgPopulationPerc;
   impact.dollarsInFlight = Math.floor(result);
   // dollars in flight severeImpact
-  const seconomicImpact = economicImpct(avgDailyIncomeInUSD, periodType, timeToElapse);
-  const sres = seconomicImpact * severeImpact.infectionsByRequestedTime * avgPopulationPerc;
+  const seconomicImpact = economicImpct(
+    avgDailyIncomeInUSD,
+    periodType,
+    timeToElapse
+  );
+  const sres = seconomicImpact
+    * severeImpact.infectionsByRequestedTime
+    * avgPopulationPerc;
   severeImpact.dollarsInFlight = Math.floor(sres);
   return {
     data,
