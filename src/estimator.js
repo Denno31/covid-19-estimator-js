@@ -63,7 +63,7 @@ const covid19ImpactEstimator = (data) => {
     timeToElapse
   );
   const result = economicImpact * impact.infectionsByRequestedTime * avgPopulationPerc;
-  impact.dollarsInFlight = Math.floor(result);
+  impact.dollarsInFlight = Math.trunc(result);
   // dollars in flight severeImpact
   const seconomicImpact = economicImpct(
     avgDailyIncomeInUSD,
@@ -73,7 +73,7 @@ const covid19ImpactEstimator = (data) => {
   const sres = seconomicImpact
     * severeImpact.infectionsByRequestedTime
     * avgPopulationPerc;
-  severeImpact.dollarsInFlight = Math.floor(sres);
+  severeImpact.dollarsInFlight = Math.trunc(sres);
   return {
     data,
     impact,
